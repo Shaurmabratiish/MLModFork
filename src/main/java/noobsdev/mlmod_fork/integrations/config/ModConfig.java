@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static noobsdev.mlmod_fork.client.Mlmod_forkClient.LOGGER;
 
@@ -21,6 +23,8 @@ public class ModConfig {
     public boolean isTextReplaceEnabled = true;
     public String sourceText = "%player%";
     public String targetText = "%selected%";
+    public List<String> ignoredPlayers = new ArrayList<>();
+    public boolean ignoredPlayers_ = false;
 
     public static ModConfig INSTANCE = load();
 

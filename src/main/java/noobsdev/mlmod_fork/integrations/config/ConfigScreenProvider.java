@@ -7,12 +7,16 @@ import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
+
 public class ConfigScreenProvider {
 
     public static Screen createConfigScreen(Screen parentScreen) {
         ModConfig config = ModConfig.INSTANCE;
 
-        ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parentScreen).setTitle(Text.translatable("text.mlmod_fork.config.config_title"));
+        ConfigBuilder builder = ConfigBuilder.create()
+                .setParentScreen(parentScreen)
+                .setTitle(Text.translatable("text.mlmod_fork.config.config_title"));
 
         ConfigCategory general = builder.getOrCreateCategory(Text.translatable("text.mlmod_fork.config.main_category"));
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
@@ -38,8 +42,25 @@ public class ConfigScreenProvider {
 
         general.addEntry(textReplaceSub.build());
 
+        SubCategoryBuilder ignoredPlayers = entryBuilder
+                .startSubCategory(Text.translatable("text.mlmod_fork.ignored_players_title"))
+                .setExpanded(true);
+
+        ignoredPlayers.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_players_title"), config.ignoredPlayers_)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.ignoredPlayers_ = newValue)
+                .build());
+
+        ignoredPlayers.add(entryBuilder.startStrList(
+                        Text.translatable("text.mlmod_fork.ignored_players_list"),
+                        config.ignoredPlayers
+                )
+                .setDefaultValue(new ArrayList<>())
+                .setSaveConsumer(newValue -> config.ignoredPlayers = newValue) // Записываем измененный список обратно в конфиг
+                .build());
+
+        general.addEntry(ignoredPlayers.build());
         builder.setSavingRunnable(config::save);
         return builder.build();
     }
-
 }
