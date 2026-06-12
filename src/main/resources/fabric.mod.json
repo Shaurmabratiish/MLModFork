@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "mlmod_fork",
+  "version": "${version}",
+  "name": "MLMod Fork",
+  "description": "Форк на новые версии популярного мода - MLMod. Разработчик - den107",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/mlmod_fork/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "noobsdev.mlmod_fork.client.Mlmod_forkClient"
+    ],
+    "main": [
+      "noobsdev.mlmod_fork.Mlmod_fork"
+    ],
+    "modmenu": [
+      "noobsdev.mlmod_fork.integrations.modmenu.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "mlmod_fork.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/HaCPZdbb"
+      }
+    }
+  }
+}

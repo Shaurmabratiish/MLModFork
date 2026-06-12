@@ -1,0 +1,11 @@
+{
+  "text.mlmod_fork.config.config_title": "Config",
+  "text.mlmod_fork.config.main_category": "General",
+  "text.mlmod_fork.config.text_replace_title": "Text replace",
+  "text.mlmod_fork.config.text_replace_toggle": "Text replace",
+  "text.mlmod_fork.config.source_text": "Source text",
+  "text.mlmod_fork.config.target_text": "Target text",
+
+  "keybind.mlmod_fork.title": "MLMod Fork",
+  "keybind.mlmod_fork.open_config": "Open config"
+}
