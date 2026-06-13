@@ -24,7 +24,13 @@ public class ModConfig {
     public String sourceText = "%player%";
     public String targetText = "%selected%";
     public List<String> ignoredPlayers = new ArrayList<>();
-    public boolean ignoredPlayers_ = false;
+    public boolean isIgnorePlayersEnabled = false;
+    public boolean ignorePlayersDebug = false;
+    public boolean isPlayerInteractionEnabled = true;
+
+    public boolean playerInteractionIgnoring = true;
+    public boolean playerInteractionAddFriend = true;
+    public boolean playerInteractionSendDM = true;
 
     public static ModConfig INSTANCE = load();
 

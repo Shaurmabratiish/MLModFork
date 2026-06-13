@@ -2,6 +2,8 @@ package noobsdev.mlmod_fork.client.listeners;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 import noobsdev.mlmod_fork.client.Mlmod_forkClient;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
@@ -15,28 +17,53 @@ public class ChatListener {
 
     public static void register() {
         ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
-            // ИСПРАВЛЕНО: Используем .getString() вместо .toString()
-            String rawText = message.getString();
+            MinecraftClient client = MinecraftClient.getInstance();
+            if (client.player == null) return true;
 
-            // Проверяем, что игрок загрузился в мир
-            if (MinecraftClient.getInstance().player == null) return true;
-
-            // Извлекаем чистый ник через ваш парсер
-            String playerName = extractPlayerName(rawText);
-
-            if (playerName != null) {
-                // Проверяем, находится ли найденный ник в черном списке вашего конфига
-                if (isPlayerInConfig(playerName)) {
-                    // ОТЛАДКА: выведет в чат, кого именно мы заблокировали
-                    MinecraftClient.getInstance().player.sendMessage(Text.literal("§c[MLMOD] Заблокировано сообщение от: " + playerName), false);
-
-                    return true; // Полностью блокируем и скрываем сообщение
+            // 1. ЖЕСТКАЯ ЗАЩИТА ОТ РЕКУРСИИ И БАГОВ МЕНЮ:
+            // Если в сообщении (или в любом его куске) уже привязана наша команда — СРАЗУ пропускаем
+            if (message.getStyle() != null && message.getStyle().getClickEvent() != null) {
+                String command = message.getStyle().getClickEvent().getValue();
+                if (command != null && (command.startsWith("/mlmod_internal_menu") || command.contains("mlmod_menu_marker"))) {
+                    return true;
                 }
             }
 
-            return true; // Разрешаем показ всех остальных сообщений
+            String rawText = message.getString();
+
+            // Дополнительная проверка по тексту (учитываем возможный \n в начале)
+            if (rawText.contains("[MLMOD]")) return true;
+
+            String fullPlayerName = extractPlayerName(rawText);
+
+            if (fullPlayerName != null) {
+                if (ModConfig.INSTANCE.isIgnorePlayersEnabled) {
+                    if (isPlayerInConfig(fullPlayerName)) {
+                        if (ModConfig.INSTANCE.ignorePlayersDebug) {
+                            client.player.sendMessage(Text.literal("§c[MLMOD] Заблокировано сообщение от: " + fullPlayerName));
+                        }
+                        Mlmod_forkClient.LOGGER.info("§c[MLMOD] Заблокировано сообщение от: {}", fullPlayerName);
+                        return false;
+                    }
+                }
+
+                if (ModConfig.INSTANCE.isPlayerInteractionEnabled) {
+                    // Создаем модифицированную копию сообщения с клик-ивентом
+                    Text modifiedMessage = message.copy().styled(style -> style
+                            .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mlmod_internal_menu " + fullPlayerName))
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eНажмите, чтобы открыть меню игрока §b" + fullPlayerName)))
+                    );
+
+                    // Отправляем новое модифицированное сообщение
+                    client.player.sendMessage(modifiedMessage, false);
+                    return false; // Блокируем оригинальное
+                }
+            }
+
+            return true;
         });
     }
+
     private static boolean isPlayerInConfig(String chatName) {
         ModConfig config = ModConfig.INSTANCE;
         if (config.ignoredPlayers == null || config.ignoredPlayers.isEmpty()) return false;
@@ -49,21 +76,23 @@ public class ChatListener {
         }
         return false;
     }
+
     public static String extractPlayerName(String rawText) {
         if (rawText == null || rawText.isEmpty()) return null;
 
         String text = rawText.trim();
 
-        // 1. Отрезаем системные префиксы чатов в начале строки, чтобы они не мешали
         if (text.startsWith("Креатив-чат »") ||
                 text.startsWith("Донат-чат »") ||
                 text.startsWith("Система »") ||
+                text.startsWith("Donate-Chat »") ||
                 text.startsWith("Друзья »")) {
             int arrowIndex = text.indexOf("»");
-            text = text.substring(arrowIndex + 1).trim();
+            if (arrowIndex != -1) {
+                text = text.substring(arrowIndex + 1).trim();
+            }
         }
 
-        // 2. Отсекаем само сообщение, оставляя только левую часть с ником и префиксами
         if (text.contains(":")) {
             text = text.split(":")[0].trim();
         } else if (text.contains("»")) {
@@ -72,16 +101,13 @@ public class ChatListener {
             text = text.split("\\.\\.\\.")[0].trim();
         }
 
-        // Теперь в переменной text осталось что-то вроде "[VIP] Hero Mineland" или "▶ Mineland"
-        // 3. Ищем самое последнее слово, которое подходит под правила ника Майнкрафт
         Matcher matcher = MINECRAFT_NAME_PATTERN.matcher(text);
         String lastFoundName = null;
 
         while (matcher.find()) {
-            lastFoundName = matcher.group(1); // Запоминаем каждое совпадение
+            lastFoundName = matcher.group(1);
         }
 
-        // Возвращаем самое последнее найденное слово (это гарантированно будет сам ник, а не элементы префиксов)
         return lastFoundName;
     }
 }

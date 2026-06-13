@@ -1,5 +1,6 @@
 package noobsdev.mlmod_fork.client.commands;
 
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.gui.screen.Screen;
 import noobsdev.mlmod_fork.integrations.config.ConfigScreenProvider;
@@ -7,9 +8,8 @@ import noobsdev.mlmod_fork.integrations.config.ConfigScreenProvider;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConfigCommand extends MLModCommand {
-
     @Override
-    public void run() {
+    public void run(FabricClientCommandSource ctx) {
         AtomicBoolean a = new AtomicBoolean(true);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (a.get()) {
@@ -19,5 +19,4 @@ public class ConfigCommand extends MLModCommand {
             }
         });
     }
-
 }
