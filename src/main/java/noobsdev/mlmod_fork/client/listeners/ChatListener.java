@@ -20,7 +20,7 @@ public class ChatListener {
             if (client.player == null) return true;
 
             if (message.getStyle() != null && message.getStyle().getClickEvent() != null) {
-                String command = message.getStyle().getClickEvent().getValue();
+                String command = String.valueOf(message.getStyle().getClickEvent().getAction());
                 if (command != null && (command.startsWith("/mlmod_internal_menu") || command.contains("mlmod_menu_marker"))) {
                     return true;
                 }
@@ -36,7 +36,7 @@ public class ChatListener {
             if (clanID != null && ModConfig.INSTANCE.isClanIgnoreEnabled && ModConfig.INSTANCE.isIgnoredClansContains(clanID)) {
 
                 if (ModConfig.INSTANCE.ignoreClansDebug) {
-                    client.player.sendMessage(Text.literal("§c[MLMOD] Заблокировано сообщение от клана: " + clanID));
+                    client.player.sendMessage(Text.literal("§c[MLMOD] Заблокировано сообщение от клана: " + clanID), false);
                 }
 
                 Mlmod_forkClient.LOGGER.info("§c[MLMOD] 1Заблокировано сообщение от клана: {}", clanID);
@@ -46,17 +46,17 @@ public class ChatListener {
             if (fullPlayerName != null && ModConfig.INSTANCE.isIgnorePlayersEnabled && ModConfig.INSTANCE.isIgnoredPlayersContains(fullPlayerName)) {
 
                 if (ModConfig.INSTANCE.ignorePlayersDebug) {
-                    client.player.sendMessage(Text.literal("§c[MLMOD] Заблокировано сообщение от: " + fullPlayerName));
+                    client.player.sendMessage(Text.literal("§c[MLMOD] Заблокировано сообщение от: " + fullPlayerName), false);
                 }
-                
+
                 Mlmod_forkClient.LOGGER.info("§c[MLMOD] Заблокировано сообщение от: {}", fullPlayerName);
                 return false;
             }
 
             if (ModConfig.INSTANCE.isPlayerInteractionEnabled && fullPlayerName != null) {
                 Text modifiedMessage = message.copy().styled(style -> style
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mlmod_internal_menu " + fullPlayerName))
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eНажмите, чтобы открыть меню игрока §b" + fullPlayerName)))
+                        .withClickEvent(new ClickEvent.RunCommand("/mlmod_internal_menu " + fullPlayerName))
+                        .withHoverEvent(new HoverEvent.ShowText(Text.literal("§eНажмите, чтобы открыть меню игрока §b" + fullPlayerName)))
                 );
                 client.player.sendMessage(modifiedMessage, false);
                 return false;
