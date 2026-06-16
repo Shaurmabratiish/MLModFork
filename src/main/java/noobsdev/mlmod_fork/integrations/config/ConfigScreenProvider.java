@@ -18,15 +18,15 @@ public class ConfigScreenProvider {
                 .setParentScreen(parentScreen)
                 .setTitle(Text.translatable("text.mlmod_fork.config.config_title"));
 
-        ConfigCategory creative = builder.getOrCreateCategory(Text.translatable("text.mlmod_fork.config.main_category"));
-        ConfigCategory chatUtils = builder.getOrCreateCategory(Text.translatable("text.mlmod_fork.config.main_category"));
+        ConfigCategory creative = builder.getOrCreateCategory(Text.translatable("text.mlmod_fork.config.creative_category"));
+        ConfigCategory chatUtils = builder.getOrCreateCategory(Text.translatable("text.mlmod_fork.config.chat_category"));
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
         SubCategoryBuilder textReplaceSub = entryBuilder
                 .startSubCategory(Text.translatable("text.mlmod_fork.config.text_replace.title"))
-                .setExpanded(true);
+                .setExpanded(false);
 
-        textReplaceSub.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.config.text_replace.title"), config.isTextReplaceEnabled)
+        textReplaceSub.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.config.text_replace_setting"), config.isTextReplaceEnabled)
                 .setDefaultValue(false)
                 .setSaveConsumer(newValue -> config.isTextReplaceEnabled = newValue)
                 .build());
@@ -45,9 +45,9 @@ public class ConfigScreenProvider {
 
         SubCategoryBuilder ignoredPlayers = entryBuilder
                 .startSubCategory(Text.translatable("text.mlmod_fork.ignored_players.title"))
-                .setExpanded(true);
+                .setExpanded(false);
 
-        ignoredPlayers.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_players.title"), config.isIgnorePlayersEnabled)
+        ignoredPlayers.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_players_setting"), config.isIgnorePlayersEnabled)
                 .setDefaultValue(false)
                 .setSaveConsumer(newValue -> config.isIgnorePlayersEnabled = newValue)
                 .build());
@@ -59,19 +59,19 @@ public class ConfigScreenProvider {
 
         ignoredPlayers.add(entryBuilder.startStrList(
                         Text.translatable("text.mlmod_fork.ignored_players_list"),
-                        config.ignoredPlayers
+                        config.ignoringPlayers
                 )
                 .setDefaultValue(new ArrayList<>())
-                .setSaveConsumer(newValue -> config.ignoredPlayers = newValue) // Записываем измененный список обратно в конфиг
+                .setSaveConsumer(newValue -> config.ignoringPlayers = newValue)
                 .build());
 
         chatUtils.addEntry(ignoredPlayers.build());
 
         SubCategoryBuilder playerInteraction = entryBuilder
                 .startSubCategory(Text.translatable("text.mlmod_fork.player_interaction.title"))
-                .setExpanded(true);
+                .setExpanded(false);
 
-        playerInteraction.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.player_interaction.title"), config.isPlayerInteractionEnabled)
+        playerInteraction.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.player_interaction_setting"), config.isPlayerInteractionEnabled)
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> config.isPlayerInteractionEnabled = newValue)
                 .build());
@@ -90,6 +90,35 @@ public class ConfigScreenProvider {
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> config.playerInteractionSendDM = newValue)
                 .build());
+
+        playerInteraction.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.player_interaction.report"), config.isPlayerInteractionReport)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> config.isPlayerInteractionReport = newValue)
+                .build());
+
+        SubCategoryBuilder clanIgnoring = entryBuilder
+                .startSubCategory(Text.translatable("text.mlmod_fork.ignored_clans.title"))
+                .setExpanded(false);
+
+        clanIgnoring.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_clans_setting"), config.isClanIgnoreEnabled)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.isClanIgnoreEnabled = newValue)
+                .build());
+
+        clanIgnoring.add(entryBuilder.startStrList(
+                        Text.translatable("text.mlmod_fork.ignored_clans_list"),
+                        config.clansIgnoring
+                )
+                .setDefaultValue(new ArrayList<>())
+                .setSaveConsumer(newValue -> config.clansIgnoring = newValue)
+                .build());
+
+        clanIgnoring.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_clans.debug"), config.ignoreClansDebug)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.ignoreClansDebug = newValue)
+                .build());
+
+        chatUtils.addEntry(clanIgnoring.build());
         chatUtils.addEntry(playerInteraction.build());
 
         builder.setSavingRunnable(config::save);

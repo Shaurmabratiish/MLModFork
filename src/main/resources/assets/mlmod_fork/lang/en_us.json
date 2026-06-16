@@ -1,19 +1,35 @@
 {
   "text.mlmod_fork.config.config_title": "Config",
-  "text.mlmod_fork.config.main_category": "General",
-  "text.mlmod_fork.config.text_replace.title": "Text replace",
-  "text.mlmod_fork.config.text_replace_toggle": "Text replace",
+  "text.mlmod_fork.config.creative_category": "Creative",
+  "text.mlmod_fork.config.chat_category": "Chat",
+  "text.mlmod_fork.config.text_replace.title": "Text replace setting",
   "text.mlmod_fork.config.source_text": "Source text",
   "text.mlmod_fork.config.target_text": "Target text",
-  "text.mlmod_fork.ignored_players.title": "Ignoring players",
+  "text.mlmod_fork.ignored_players.title": "Ignoring players setting",
   "text.mlmod_fork.ignored_players.debug": "Debug",
   "text.mlmod_fork.ignored_players_list": "Players list",
-  "text.mlmod_fork.player_interaction.title": "Interacting with a player in chat",
+  "text.mlmod_fork.player_interaction.title": "Interaction with a player in chat",
   "text.mlmod_fork.player_interaction.ignoring": "Add to ignore",
+  "text.mlmod_fork.player_interaction.remove_ignore": "Remove from ignore",
   "text.mlmod_fork.player_interaction.add_friend": "Add as friend",
   "text.mlmod_fork.player_interaction.send_dm": "Send in DM",
-
+  "text.mlmod_fork.player_interaction.report": "Report him",
+  "text.mlmod_fork.config.text_replace_setting": "Text replace enabled",
+  "text.mlmod_fork.ignored_players_setting": "Ignored players enabled",
+  "text.mlmod_fork.player_interaction_setting": "Player interaction enabled",
+  "text.mlmod_fork.ignored_clans.title": "Ignored clans setting",
+  "text.mlmod_fork.ignored_clans_setting": "Ignored clans enabled",
+  "text.mlmod_fork.ignored_clans_list": "Clans list",
+  "text.mlmod_fork.ignored_clans.debug": "Debug",
 
   "keybind.mlmod_fork.title": "MLMod Fork",
-  "keybind.mlmod_fork.open_config": "Open config"
+  "keybind.mlmod_fork.open_config": "Open config",
+
+
+  "button.interaction_with_player.ignoring_add": "§cAdd player to ignore-list!",
+  "button.interaction_with_player.ignoring_remove": "§aRemove player from ignore-list!",
+  "button.interaction_with_player.send_dm": "§6Send in player DM!",
+  "button.interaction_with_player.add_friend": "§bAdd player as friend!",
+  "button.interaction_with_player.report": "§cReport to player!"
+
 }

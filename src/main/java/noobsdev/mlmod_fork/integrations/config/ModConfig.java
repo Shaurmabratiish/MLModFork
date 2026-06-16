@@ -23,14 +23,20 @@ public class ModConfig {
     public boolean isTextReplaceEnabled = true;
     public String sourceText = "%player%";
     public String targetText = "%selected%";
-    public List<String> ignoredPlayers = new ArrayList<>();
+
+    public List<String> ignoringPlayers = new ArrayList<>();
     public boolean isIgnorePlayersEnabled = false;
     public boolean ignorePlayersDebug = false;
-    public boolean isPlayerInteractionEnabled = true;
 
+    public boolean isPlayerInteractionEnabled = true;
     public boolean playerInteractionIgnoring = true;
     public boolean playerInteractionAddFriend = true;
     public boolean playerInteractionSendDM = true;
+    public boolean isPlayerInteractionReport = true;
+
+    public List<String> clansIgnoring = new ArrayList<>();
+    public boolean isClanIgnoreEnabled = false;
+    public boolean ignoreClansDebug = false;
 
     public static ModConfig INSTANCE = load();
 
@@ -53,4 +59,29 @@ public class ModConfig {
             LOGGER.error(e);
         }
     }
+
+    public boolean isIgnoredPlayersContains(String name) {
+        if (ModConfig.INSTANCE.ignoringPlayers == null || ModConfig.INSTANCE.ignoringPlayers.isEmpty()) return false;
+
+        for (String ignoredPlayers : ModConfig.INSTANCE.ignoringPlayers) {
+            if (name.contains(ignoredPlayers) ||
+                    name.toLowerCase().contains(ignoredPlayers.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isIgnoredClansContains(String name) {
+        if (clansIgnoring == null || clansIgnoring.isEmpty()) return false;
+
+        for (String clansIgnoring : clansIgnoring) {
+            if (name.contains(clansIgnoring) ||
+                    name.toLowerCase().contains(clansIgnoring.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

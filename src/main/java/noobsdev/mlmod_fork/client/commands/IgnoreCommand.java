@@ -1,7 +1,5 @@
 package noobsdev.mlmod_fork.client.commands;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.text.Text;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
@@ -19,17 +17,17 @@ public class IgnoreCommand extends MLModCommand{
         var player = ctx.getClient().player;
         if (player == null) return;
 
-        if (ModConfig.INSTANCE.ignoredPlayers == null) {
-            ModConfig.INSTANCE.ignoredPlayers = new ArrayList<>();
+        if (ModConfig.INSTANCE.ignoringPlayers == null) {
+            ModConfig.INSTANCE.ignoringPlayers = new ArrayList<>();
         }
 
-        boolean alreadyContains = ModConfig.INSTANCE.ignoredPlayers.stream()
+        boolean alreadyContains = ModConfig.INSTANCE.ignoringPlayers.stream()
                 .anyMatch(p -> p.equalsIgnoreCase(target));
 
         if (alreadyContains) {
             player.sendMessage(Text.literal("§c[MLMOD] Игрок §b" + target + " §cуже находится в игноре."), false);
         } else {
-            ModConfig.INSTANCE.ignoredPlayers.add(target);
+            ModConfig.INSTANCE.ignoringPlayers.add(target);
             player.sendMessage(Text.literal("§a[MLMOD] Игрок §b" + target + " §aуспешно добавлен в игнор."), false);
             ModConfig.INSTANCE.save();
         }
@@ -39,12 +37,12 @@ public class IgnoreCommand extends MLModCommand{
         var player = ctx.getClient().player;
         if (player == null) return;
 
-        if (ModConfig.INSTANCE.ignoredPlayers == null || ModConfig.INSTANCE.ignoredPlayers.isEmpty()) {
+        if (ModConfig.INSTANCE.ignoringPlayers == null || ModConfig.INSTANCE.ignoringPlayers.isEmpty()) {
             player.sendMessage(Text.literal("§c[MLMOD] Список игнорируемых игроков пуст."), false);
             return;
         }
 
-        boolean removed = ModConfig.INSTANCE.ignoredPlayers.removeIf(p -> p.equalsIgnoreCase(target));
+        boolean removed = ModConfig.INSTANCE.ignoringPlayers.removeIf(p -> p.equalsIgnoreCase(target));
         if (removed) {
             player.sendMessage(Text.literal("§a[MLMOD] Игрок §b" + target + " §aудален из игнора."), false);
             ModConfig.INSTANCE.save();

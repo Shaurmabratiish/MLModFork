@@ -9,7 +9,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class CommandHandler {
@@ -38,7 +37,7 @@ public class CommandHandler {
                             return 1;
                         })
                         .then(ClientCommandManager.literal("add")
-                                .then(ClientCommandManager.argument("playerName", StringArgumentType.word())
+                                .then(ClientCommandManager.argument("playerName", StringArgumentType.greedyString())
                                         .executes(context -> {
                                             String target = StringArgumentType.getString(context, "playerName");
                                             new IgnoreCommand().add(context.getSource(),target);
@@ -47,7 +46,7 @@ public class CommandHandler {
                                 )
                         )
                         .then(ClientCommandManager.literal("remove")
-                                .then(ClientCommandManager.argument("playerName", StringArgumentType.word())
+                                .then(ClientCommandManager.argument("playerName", StringArgumentType.greedyString())
                                         .executes(context -> {
                                             String target = StringArgumentType.getString(context, "playerName");
                                             new IgnoreCommand().remove(context.getSource(),target);
@@ -59,54 +58,76 @@ public class CommandHandler {
 
                 )
         ));
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("mlmod_internal_menu")
-                    .then(ClientCommandManager.argument("targetPlayer", StringArgumentType.word())
-                            .executes(context -> {
-                                String targetPlayer = StringArgumentType.getString(context, "targetPlayer");
-                                var client = context.getSource().getClient();
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("mlmod_internal_menu")
+                .then(ClientCommandManager.argument("targetPlayer", StringArgumentType.greedyString())
+                        .executes(context -> {
+                            String targetPlayer = StringArgumentType.getString(context, "targetPlayer");
+                            var client = context.getSource().getClient();
 
-                                if (client.player != null) {
-                                    MutableText menu = Text.literal("\n§7[MLMOD] Действия над §b" + targetPlayer + "§7: \n\n");
-                                    MutableText ignoreBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.ignoring")).append("]")
+                            if (client.player != null) {
+                                MutableText menu = Text.literal("\n§7[MLMOD] Действия над §b" + targetPlayer + "§7: \n\n");
+
+                                MutableText ignoreBtn;
+                                boolean ignoredPlayersContains = ModConfig.INSTANCE.isIgnoredPlayersContains(targetPlayer);
+                                if (!ignoredPlayersContains) {
+                                    ignoreBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.ignoring")).append("]")
                                             .formatted(Formatting.RED)
                                             .styled(style -> style
                                                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mlmod ignore add " + targetPlayer)) // или ваша команда конфига
-                                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§cДобавить игрока в игнор-лист")))
+                                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.ignoring_add")))
                                             );
-
-                                    MutableText msgBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.send_dm")).append("]")
-                                            .formatted(Formatting.YELLOW)
+                                } else {
+                                    ignoreBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.remove_ignore")).append("]")
+                                            .formatted(Formatting.GREEN)
                                             .styled(style -> style
-                                                    .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + targetPlayer + " "))
-                                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§aНаписать в лс")))
+                                                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mlmod ignore remove " + targetPlayer)) // или ваша команда конфига
+                                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.ignoring_remove")))
                                             );
-
-                                    MutableText friendBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.add_friend")).append("]")
-                                            .formatted(Formatting.AQUA)
-                                            .styled(style -> style
-                                                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/f add " + targetPlayer))
-                                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§bДобавить игрока в друзья")))
-                                            );
-
-                                    ModConfig config = ModConfig.INSTANCE;
-                                    if (config.playerInteractionIgnoring) {
-                                        menu.append(ignoreBtn).append("   ");
-                                    }
-                                    if (config.playerInteractionAddFriend) {
-                                        menu.append(friendBtn).append("   ");
-                                    }
-                                    if (config.playerInteractionSendDM) {
-                                        menu.append(msgBtn).append("   ");
-                                    }
-                                    menu.append("\n");
-                                    client.player.sendMessage(menu, false);
                                 }
-                                return 1;
-                            })
-                    )
-            );
-        });
+
+
+                                MutableText msgBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.send_dm")).append("]")
+                                        .formatted(Formatting.YELLOW)
+                                        .styled(style -> style
+                                                .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + targetPlayer + " "))
+                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.send_dm")))
+                                        );
+
+                                MutableText friendBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.add_friend")).append("]")
+                                        .formatted(Formatting.AQUA)
+                                        .styled(style -> style
+                                                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/f add " + targetPlayer))
+                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.add_friend")))
+                                        );
+
+                                MutableText reportBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.report")).append("]")
+                                        .formatted(Formatting.RED)
+                                        .styled(style -> style
+                                                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/report " + targetPlayer))
+                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.report")))
+                                        );
+
+                                ModConfig config = ModConfig.INSTANCE;
+                                if (config.playerInteractionIgnoring) {
+                                    menu.append(ignoreBtn).append("   ");
+                                }
+                                if (config.playerInteractionAddFriend) {
+                                    menu.append(friendBtn).append("   ");
+                                }
+                                if (config.playerInteractionSendDM) {
+                                    menu.append(msgBtn).append("   ");
+                                }
+                                if (config.isPlayerInteractionReport) {
+                                    menu.append(reportBtn).append("   ");
+                                }
+                                menu.append("\n");
+                                client.player.sendMessage(menu, false);
+                            }
+                            return 1;
+                        })
+
+                )
+        ));
     }
 
 }

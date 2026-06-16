@@ -1,4 +1,4 @@
-package noobsdev.mlmod_fork.api;
+package noobsdev.mlmod_fork.util;
 
 import lombok.Getter;
 import lombok.Setter;

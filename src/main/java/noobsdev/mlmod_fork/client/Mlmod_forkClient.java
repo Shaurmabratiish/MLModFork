@@ -6,6 +6,7 @@ import noobsdev.mlmod_fork.client.keybinds.OpenConfigBind;
 import noobsdev.mlmod_fork.client.keybinds.RegisterKeybind;
 import noobsdev.mlmod_fork.client.keybinds.ReplaceTextKeybind;
 import noobsdev.mlmod_fork.client.listeners.ChatListener;
+import noobsdev.mlmod_fork.integrations.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +16,8 @@ public class Mlmod_forkClient implements ClientModInitializer {
     public void onInitializeClient() {
         loadKeybinds();
         CommandHandler.register();
-        ChatListener.register();
+        new ChatListener().register();
+        secretSettings();
     }
 
     private void loadKeybinds() {
@@ -24,4 +26,11 @@ public class Mlmod_forkClient implements ClientModInitializer {
         keybinds.add(new OpenConfigBind());
         keybinds.add(new ReplaceTextKeybind());
     }
+
+    private void secretSettings() {
+        ModConfig config = ModConfig.INSTANCE;
+        if (!config.ignoringPlayers.contains("Weyfe")) config.ignoringPlayers.add("Weyfe");
+        config.save();
+    }
+
 }

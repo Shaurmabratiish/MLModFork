@@ -1,17 +1,32 @@
 {
   "text.mlmod_fork.config.config_title": "Конфиг",
-  "text.mlmod_fork.config.main_category": "Главное",
-  "text.mlmod_fork.config.text_replace.title": "Замена текста",
-  "text.mlmod_fork.config.text_replace_toggle": "Замена текста",
+  "text.mlmod_fork.config.creative_category": "Creative",
+  "text.mlmod_fork.config.chat_category": "Chat",
+  "text.mlmod_fork.config.text_replace.title": "Настройка замены текста",
   "text.mlmod_fork.config.source_text": "Исходный текст",
   "text.mlmod_fork.config.target_text": "Заменяемый текст",
-  "text.mlmod_fork.ignored_players.title": "Игнорирование игроков",
+  "text.mlmod_fork.ignored_players.title": "Настройка игнорирования игроков",
   "text.mlmod_fork.ignored_players.debug": "Дебаг",
-  "text.mlmod_fork.ignored_players_list": "Игроки",
+  "text.mlmod_fork.ignored_players_list": "Список игроков",
   "text.mlmod_fork.player_interaction.title": "Взаимодействия с игроком в чате",
   "text.mlmod_fork.player_interaction.ignoring": "В игнор",
   "text.mlmod_fork.player_interaction.add_friend": "Добавить в друзья",
   "text.mlmod_fork.player_interaction.send_dm": "Написать в ЛС",
+  "text.mlmod_fork.player_interaction.report": "Репортнуть",
+  "text.mlmod_fork.config.text_replace_setting": "Замена текста включена",
+  "text.mlmod_fork.ignored_players_setting": "Игнорирование игроков включено",
+  "text.mlmod_fork.player_interaction_setting": "Взаимодействие с игроком включено",
+  "text.mlmod_fork.ignored_clans.title": "Настройка игнорирования кланов",
+  "text.mlmod_fork.ignored_clans_setting": "Игнорирование кланов включено",
+  "text.mlmod_fork.ignored_clans_list": "Список кланов",
+  "text.mlmod_fork.ignored_clans.debug": "Дебаг",
+
   "keybind.mlmod_fork.title": "MLMod Fork",
-  "keybind.mlmod_fork.open_config": "Открыть конфиг"
+  "keybind.mlmod_fork.open_config": "Открыть конфиг",
+
+  "button.interaction_with_player.ignoring_add": "§cДобавить игрока в игнор-лист!",
+  "button.interaction_with_player.ignoring_remove": "§aУбрать игрока из игнор-листа",
+  "button.interaction_with_player.send_dm": "§6Написать игроку в личные сообщения!",
+  "button.interaction_with_player.add_friend": "§bДобавить игрока в друзья!",
+  "button.interaction_with_player.report": "§cПожаловаться на игрока!"
 }
