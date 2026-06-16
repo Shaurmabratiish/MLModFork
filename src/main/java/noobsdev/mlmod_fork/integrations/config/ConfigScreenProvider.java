@@ -43,6 +43,22 @@ public class ConfigScreenProvider {
 
         creative.addEntry(textReplaceSub.build());
 
+        SubCategoryBuilder flyBoost = entryBuilder
+                .startSubCategory(Text.translatable("text.mlmod_fork.config.fly_boost.title"))
+                .setExpanded(false);
+
+        flyBoost.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.config.fly_boost"), config.isFlyBoostEnabled)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.isFlyBoostEnabled = newValue)
+                .build());
+
+        flyBoost.add(entryBuilder.startIntSlider(Text.literal("Fly Boost"), config.flyBoost, 10, 150)
+                .setDefaultValue(10)
+                .setSaveConsumer(newValue -> config.flyBoost = newValue)
+                .build());
+
+        creative.addEntry(flyBoost.build());
+
         SubCategoryBuilder ignoredPlayers = entryBuilder
                 .startSubCategory(Text.translatable("text.mlmod_fork.ignored_players.title"))
                 .setExpanded(false);

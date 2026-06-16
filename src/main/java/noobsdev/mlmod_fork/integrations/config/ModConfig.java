@@ -38,6 +38,9 @@ public class ModConfig {
     public boolean isClanIgnoreEnabled = false;
     public boolean ignoreClansDebug = false;
 
+    public boolean isFlyBoostEnabled = false;
+    public int flyBoost = 10;
+
     public static ModConfig INSTANCE = load();
 
     public static ModConfig load() {
