@@ -41,6 +41,10 @@ public class ModConfig {
     public boolean isFlyBoostEnabled = false;
     public int flyBoost = 10;
 
+    public List<String> worldsIgnoring = new ArrayList<>();
+    public boolean isWorldIgnoreEnabled = false;
+    public boolean ignoreWorldsDebug = false;
+
     public static ModConfig INSTANCE = load();
 
     public static ModConfig load() {
@@ -81,6 +85,18 @@ public class ModConfig {
         for (String clansIgnoring : clansIgnoring) {
             if (name.contains(clansIgnoring) ||
                     name.toLowerCase().contains(clansIgnoring.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isIgnoredWorldsContains (String name) {
+        if (worldsIgnoring == null || worldsIgnoring.isEmpty()) return false;
+
+        for (String worldsIgnoring : worldsIgnoring) {
+            if (name.contains(worldsIgnoring) ||
+                    name.toLowerCase().contains(worldsIgnoring.toLowerCase())) {
                 return true;
             }
         }

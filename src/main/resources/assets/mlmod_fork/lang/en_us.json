@@ -21,6 +21,13 @@
   "text.mlmod_fork.ignored_clans_setting": "Ignored clans enabled",
   "text.mlmod_fork.ignored_clans_list": "Clans list",
   "text.mlmod_fork.ignored_clans.debug": "Debug",
+  "text.mlmod_fork.config.fly_boost.title": "Быстрый полёт",
+  "text.mlmod_fork.config.fly_boost": "Быстрый полёт включен",
+  "text.mlmod_fork.config.fly_boost.speed": "Скорсть",
+  "text.mlmod_fork.ignored_worlds.title": "",
+  "text.mlmod_fork.ignored_worlds_setting": "",
+  "text.mlmod_fork.ignored_worlds.debug": "",
+  "text.mlmod_fork.ignored_worlds_list": "",
 
   "keybind.mlmod_fork.title": "MLMod Fork",
   "keybind.mlmod_fork.open_config": "Open config",

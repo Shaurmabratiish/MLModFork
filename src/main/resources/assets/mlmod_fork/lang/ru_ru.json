@@ -7,7 +7,7 @@
   "text.mlmod_fork.config.target_text": "Заменяемый текст",
   "text.mlmod_fork.ignored_players.title": "Настройка игнорирования игроков",
   "text.mlmod_fork.ignored_players.debug": "Дебаг",
-  "text.mlmod_fork.ignored_players_list": "Список игроков",
+  "text.mlmod_fork.ignored_players_list": "Игнорируемые игроки",
   "text.mlmod_fork.player_interaction.title": "Взаимодействия с игроком в чате",
   "text.mlmod_fork.player_interaction.ignoring": "В игнор",
   "text.mlmod_fork.player_interaction.add_friend": "Добавить в друзья",
@@ -18,8 +18,17 @@
   "text.mlmod_fork.player_interaction_setting": "Взаимодействие с игроком включено",
   "text.mlmod_fork.ignored_clans.title": "Настройка игнорирования кланов",
   "text.mlmod_fork.ignored_clans_setting": "Игнорирование кланов включено",
-  "text.mlmod_fork.ignored_clans_list": "Список кланов",
+  "text.mlmod_fork.ignored_clans_list": "Игнорируемые кланы",
   "text.mlmod_fork.ignored_clans.debug": "Дебаг",
+  "text.mlmod_fork.config.fly_boost.title": "Быстрый полёт",
+  "text.mlmod_fork.config.fly_boost": "Быстрый полёт включен",
+  "text.mlmod_fork.config.fly_boost.speed": "Скорсть",
+  "text.mlmod_fork.ignored_worlds.title": "Настройка игнорирования рекламы миров",
+  "text.mlmod_fork.ignored_worlds_setting": "Игнорирование миров включено",
+  "text.mlmod_fork.ignored_worlds.debug": "Дебаг",
+  "text.mlmod_fork.ignored_worlds_list": "Игнорируемые миры",
+
+
 
   "keybind.mlmod_fork.title": "MLMod Fork",
   "keybind.mlmod_fork.open_config": "Открыть конфиг",
