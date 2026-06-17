@@ -121,6 +121,11 @@ public class ConfigScreenProvider {
                 .setSaveConsumer(newValue -> config.isClanIgnoreEnabled = newValue)
                 .build());
 
+        clanIgnoring.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_clans.debug"), config.ignoreClansDebug)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.ignoreClansDebug = newValue)
+                .build());
+
         clanIgnoring.add(entryBuilder.startStrList(
                         Text.translatable("text.mlmod_fork.ignored_clans_list"),
                         config.clansIgnoring
@@ -129,10 +134,6 @@ public class ConfigScreenProvider {
                 .setSaveConsumer(newValue -> config.clansIgnoring = newValue)
                 .build());
 
-        clanIgnoring.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_clans.debug"), config.ignoreClansDebug)
-                .setDefaultValue(false)
-                .setSaveConsumer(newValue -> config.ignoreClansDebug = newValue)
-                .build());
 
         chatUtils.addEntry(clanIgnoring.build());
         chatUtils.addEntry(playerInteraction.build());

@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import noobsdev.mlmod_fork.client.Mlmod_forkClient;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
 import noobsdev.mlmod_fork.util.ChatMessageParser;
+import org.jetbrains.annotations.Nullable;
 
 public class ChatListener {
 
@@ -20,7 +21,7 @@ public class ChatListener {
             if (client.player == null) return true;
 
             if (message.getStyle() != null && message.getStyle().getClickEvent() != null) {
-                String command = String.valueOf(message.getStyle().getClickEvent().getAction());
+                String command = getString(message);
                 if (command != null && (command.startsWith("/mlmod_internal_menu") || command.contains("mlmod_menu_marker"))) {
                     return true;
                 }
@@ -64,5 +65,18 @@ public class ChatListener {
 
             return true;
         });
+    }
+
+    private static @Nullable String getString(Text message) {
+        ClickEvent clickEvent = message.getStyle().getClickEvent();
+
+        return switch (clickEvent) {
+            case ClickEvent.RunCommand caseEvent -> caseEvent.command();
+            case ClickEvent.SuggestCommand caseEvent -> caseEvent.command();
+            case ClickEvent.OpenUrl caseEvent -> String.valueOf(caseEvent.uri());
+            case ClickEvent.CopyToClipboard caseEvent -> caseEvent.value();
+            case ClickEvent.OpenFile caseEvent -> caseEvent.path();
+            case null, default -> null;
+        };
     }
 }
