@@ -3,6 +3,7 @@ package noobsdev.mlmod_fork.util;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Text;
 import noobsdev.mlmod_fork.client.Mlmod_forkClient;
+import noobsdev.mlmod_fork.client.listeners.ChatListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,8 +74,10 @@ public class ChatMessageParser {
     public String getWorldID(Text message) {
         ClickEvent event = findClickEvent(message);
 
-         if(event != null && event.getAction() == ClickEvent.Action.RUN_COMMAND && event.getValue().startsWith("/ad ")) {
-             return event.getValue().split(" ")[1];
+         if(event != null && event.getAction() == ClickEvent.Action.RUN_COMMAND) {
+             String command = ChatListener.getString(message);
+             assert command != null;
+             if(command.startsWith("/ad")) return command.split(" ")[1];
          }
 
          return null;
