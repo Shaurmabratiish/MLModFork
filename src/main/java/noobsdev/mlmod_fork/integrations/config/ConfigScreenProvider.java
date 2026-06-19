@@ -52,7 +52,7 @@ public class ConfigScreenProvider {
                 .setSaveConsumer(newValue -> config.isFlyBoostEnabled = newValue)
                 .build());
 
-        flyBoost.add(entryBuilder.startIntSlider(Text.literal("Fly Boost"), config.flyBoost, 10, 150)
+        flyBoost.add(entryBuilder.startIntSlider(Text.translatable("text.mlmod_fork.config.fly_boost.speed"), config.flyBoost, 10, 150)
                 .setDefaultValue(10)
                 .setSaveConsumer(newValue -> config.flyBoost = newValue)
                 .build());
@@ -134,7 +134,29 @@ public class ConfigScreenProvider {
                 .setSaveConsumer(newValue -> config.clansIgnoring = newValue)
                 .build());
 
+        SubCategoryBuilder worldIgnoring = entryBuilder
+                .startSubCategory(Text.translatable("text.mlmod_fork.ignored_worlds.title"))
+                .setExpanded(false);
 
+        worldIgnoring.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_worlds_setting"), config.isWorldIgnoreEnabled)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.isWorldIgnoreEnabled = newValue)
+                .build());
+
+        worldIgnoring.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.ignored_worlds.debug"), config.ignoreWorldsDebug)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.ignoreWorldsDebug = newValue)
+                .build());
+
+        worldIgnoring.add(entryBuilder.startStrList(
+                        Text.translatable("text.mlmod_fork.ignored_worlds_list"),
+                        config.worldsIgnoring
+                )
+                .setDefaultValue(new ArrayList<>())
+                .setSaveConsumer(newValue -> config.worldsIgnoring = newValue)
+                .build());
+
+        chatUtils.addEntry(worldIgnoring.build());
         chatUtils.addEntry(clanIgnoring.build());
         chatUtils.addEntry(playerInteraction.build());
 

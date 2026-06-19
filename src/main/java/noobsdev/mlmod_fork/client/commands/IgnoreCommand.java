@@ -13,7 +13,7 @@ public class IgnoreCommand extends MLModCommand{
     public void run(FabricClientCommandSource ctx) {
     }
 
-    public void add(FabricClientCommandSource ctx, String target) {
+    public void addPlayer(FabricClientCommandSource ctx, String target) {
         var player = ctx.getClient().player;
         if (player == null) return;
 
@@ -33,7 +33,7 @@ public class IgnoreCommand extends MLModCommand{
         }
     }
 
-    public void remove(FabricClientCommandSource ctx, String target) {
+    public void removePlayer(FabricClientCommandSource ctx, String target) {
         var player = ctx.getClient().player;
         if (player == null) return;
 
@@ -48,6 +48,26 @@ public class IgnoreCommand extends MLModCommand{
             ModConfig.INSTANCE.save();
         } else {
             player.sendMessage(Text.literal("§c[MLMOD] Игрок §b" + target + " §cне найден в списке игнора."), false);
+        }
+    }
+
+    public void addWorld(FabricClientCommandSource ctx, String target) {
+        var player = ctx.getClient().player;
+        if (player == null) return;
+
+        if (ModConfig.INSTANCE.worldsIgnoring == null) {
+            ModConfig.INSTANCE.worldsIgnoring = new ArrayList<>();
+        }
+
+        boolean alreadyContains = ModConfig.INSTANCE.worldsIgnoring.stream()
+                .anyMatch(p -> p.equalsIgnoreCase(target));
+
+        if (alreadyContains) {
+            player.sendMessage(Text.literal("§c[MLMOD] Мир §b" + target + " §cуже находится в игноре."), false);
+        } else {
+            ModConfig.INSTANCE.worldsIgnoring.add(target);
+            player.sendMessage(Text.literal("§a[MLMOD] Мир §b" + target + " §aуспешно добавлен в игнор."), false);
+            ModConfig.INSTANCE.save();
         }
     }
 

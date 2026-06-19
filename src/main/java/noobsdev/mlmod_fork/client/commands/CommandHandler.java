@@ -40,7 +40,7 @@ public class CommandHandler {
                                 .then(ClientCommandManager.argument("playerName", StringArgumentType.greedyString())
                                         .executes(context -> {
                                             String target = StringArgumentType.getString(context, "playerName");
-                                            new IgnoreCommand().add(context.getSource(),target);
+                                            new IgnoreCommand().addPlayer(context.getSource(),target);
                                             return 1;
                                         })
                                 )
@@ -49,13 +49,28 @@ public class CommandHandler {
                                 .then(ClientCommandManager.argument("playerName", StringArgumentType.greedyString())
                                         .executes(context -> {
                                             String target = StringArgumentType.getString(context, "playerName");
-                                            new IgnoreCommand().remove(context.getSource(),target);
+                                            new IgnoreCommand().removePlayer(context.getSource(),target);
                                             return 1;
                                         })
                                 )
                         )
 
 
+                )
+                .then(literal("ignore_world")
+                        .executes(ctx -> {
+                            new ConfigCommand().run(ctx.getSource());
+                            return 1;
+                        })
+                        .then(ClientCommandManager.literal("add")
+                                .then(ClientCommandManager.argument("worldName", StringArgumentType.greedyString())
+                                        .executes(context -> {
+                                            String target = StringArgumentType.getString(context, "worldName");
+                                            new IgnoreCommand().addWorld(context.getSource(),target);
+                                            return 1;
+                                        })
+                                )
+                        )
                 )
         ));
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("mlmod_internal_menu")

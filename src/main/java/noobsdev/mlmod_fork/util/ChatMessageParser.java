@@ -1,5 +1,7 @@
 package noobsdev.mlmod_fork.util;
 
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Text;
 import noobsdev.mlmod_fork.client.Mlmod_forkClient;
 
 import java.util.regex.Matcher;
@@ -10,6 +12,7 @@ public class ChatMessageParser {
     public static final Pattern CREATIVE_CHAT = Pattern.compile("(Креатив-чат|Creative-chat) » (?:([^\\s:]+) )?([^\\s:]+)(?: ([^\\s:]+))?: (.*)");
     public static final Pattern SYSTEM = Pattern.compile("(Система|System|Друзья|Friends) » (?:([^\\s:]+) )?([^\\s:]+)(?: ([^\\s:]+))?(?: (.*))?");
     public static final Pattern LOCAL_CHAT = Pattern.compile("(?:\\[(\\S+)] )?(?:(\\S+) )?(\\S+)(?: (\\S+))? » (.*)");
+    public static final Pattern WORLD_INVITE = Pattern.compile("\\| (?:([^\\s:]+) )?([^\\s:]+)(?: ([^\\s:]+))?");
     public ChatMessageParser(){}
 
     public String getNameByText(String text) {
@@ -38,6 +41,11 @@ public class ChatMessageParser {
             return matcher.group(3);
         }
 
+        matcher = WORLD_INVITE.matcher(text);
+        if(matcher.matches()) {
+            return matcher.group(2);
+        }
+
         return null;
     }
 
@@ -61,5 +69,34 @@ public class ChatMessageParser {
 
         return null;
     }
+
+    public String getWorldID(Text message) {
+        ClickEvent event = findClickEvent(message);
+
+         if(event != null && event.getAction() == ClickEvent.Action.RUN_COMMAND && event.getValue().startsWith("/ad ")) {
+             return event.getValue().split(" ")[1];
+         }
+
+         return null;
+
+    }
+
+    private ClickEvent findClickEvent(Text text) {
+        ClickEvent clickEvent = text.getStyle().getClickEvent();
+
+        if (clickEvent != null) {
+            return clickEvent;
+        }
+
+        for (Text sibling : text.getSiblings()) {
+            ClickEvent event = findClickEvent(sibling);
+            if (event != null) {
+                return event;
+            }
+        }
+
+        return null;
+    }
+
 
 }
