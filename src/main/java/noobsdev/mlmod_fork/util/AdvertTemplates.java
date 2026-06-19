@@ -13,5 +13,5 @@ public enum AdvertTemplates {
     AdvertTemplates(String text) {
         this.text = text;
     }
-
+    
 }

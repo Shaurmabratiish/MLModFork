@@ -6,6 +6,7 @@ import noobsdev.mlmod_fork.client.keybinds.OpenConfigBind;
 import noobsdev.mlmod_fork.client.keybinds.RegisterKeybind;
 import noobsdev.mlmod_fork.client.keybinds.ReplaceTextKeybind;
 import noobsdev.mlmod_fork.client.listeners.ChatListener;
+import noobsdev.mlmod_fork.client.listeners.TickListener;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,7 @@ public class Mlmod_forkClient implements ClientModInitializer {
         CommandHandler.register();
         new ChatListener().register();
         secretSettings();
+        new TickListener().register();
     }
 
     private void loadKeybinds() {
