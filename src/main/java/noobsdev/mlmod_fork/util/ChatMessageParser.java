@@ -73,11 +73,11 @@ public class ChatMessageParser {
     public String getWorldID(Text message) {
         ClickEvent event = findClickEvent(message);
 
-         if(event != null && event.getAction() == ClickEvent.Action.RUN_COMMAND && event.getValue().startsWith("/ad ")) {
-             return event.getValue().split(" ")[1];
-         }
+        if(event != null && event.getAction() == ClickEvent.Action.RUN_COMMAND && event.getValue().startsWith("/ad ")) {
+            return event.getValue().split(" ")[1];
+        }
 
-         return null;
+        return null;
 
     }
 
