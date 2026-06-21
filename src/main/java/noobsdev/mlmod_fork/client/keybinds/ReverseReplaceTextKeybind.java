@@ -12,9 +12,9 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
 
-public class ReplaceTextKeybind extends Keybinder {
-    public ReplaceTextKeybind() {
-        super(GLFW.GLFW_KEY_H, "keybind.mlmod_fork.replace_text", "keybind.mlmod_fork.title");
+public class ReverseReplaceTextKeybind extends Keybinder{
+    public ReverseReplaceTextKeybind() {
+        super(GLFW.GLFW_KEY_J, "keybind.mlmod_fork.reverse_replace_text", "keybind.mlmod_fork.title");
     }
 
     @Override
@@ -34,8 +34,8 @@ public class ReplaceTextKeybind extends Keybinder {
     }
 
     private ItemStack parser(ItemStack item) {
-        String targetText = ModConfig.INSTANCE.targetText;
-        String sourceText = ModConfig.INSTANCE.sourceText;
+        String targetText = ModConfig.INSTANCE.sourceText;
+        String sourceText = ModConfig.INSTANCE.targetText;
 
         ItemStack result = item.copy();
 
@@ -69,7 +69,7 @@ public class ReplaceTextKeybind extends Keybinder {
             NbtCompound creative = rootNbt.getCompoundOrEmpty("creative");
             if (creative.contains("value")) {
                 NbtCompound creativeValue = creative.getCompoundOrEmpty("value");
-                
+
                 if (creativeValue.contains("value")) {
                     String text = creativeValue.getString("value", null);
                     if (text != null && text.contains(sourceText)) {

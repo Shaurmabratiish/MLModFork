@@ -23,6 +23,7 @@ public class ModConfig {
     public boolean isTextReplaceEnabled = true;
     public String sourceText = "%player%";
     public String targetText = "%selected%";
+    public boolean reverseMode = true;
 
     public List<String> ignoringPlayers = new ArrayList<>();
     public boolean isIgnorePlayersEnabled = false;

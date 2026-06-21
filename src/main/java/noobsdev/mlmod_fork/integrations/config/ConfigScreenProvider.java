@@ -41,6 +41,11 @@ public class ConfigScreenProvider {
                 .setSaveConsumer(newValue -> config.targetText = newValue)
                 .build());
 
+        textReplaceSub.add(entryBuilder.startBooleanToggle(Text.translatable("text.mlmod_fork.config.text_replace.reverse"), config.reverseMode)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.reverseMode = newValue)
+                .build());
+
         creative.addEntry(textReplaceSub.build());
 
         SubCategoryBuilder flyBoost = entryBuilder
