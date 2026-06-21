@@ -74,14 +74,15 @@ public class ChatMessageParser {
     public String getWorldID(Text message) {
         ClickEvent event = findClickEvent(message);
 
-         if(event != null && event.getAction() == ClickEvent.Action.RUN_COMMAND) {
-             String command = ChatListener.getString(message);
-             assert command != null;
-             if(command.startsWith("/ad")) return command.split(" ")[1];
-         }
+        if (event != null && event.getAction() == ClickEvent.Action.RUN_COMMAND) {
+            String command = ChatListener.getString(message);
 
-         return null;
+            if (command != null && command.startsWith("/ad")) {
+                return command.split(" ")[1];
+            }
+        }
 
+        return null;
     }
 
     private ClickEvent findClickEvent(Text text) {
