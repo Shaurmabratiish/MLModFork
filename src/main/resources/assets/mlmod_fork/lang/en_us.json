@@ -30,7 +30,7 @@
   "text.mlmod_fork.ignored_worlds.debug": "",
   "text.mlmod_fork.ignored_worlds_list": "",
 
-  "keybind.mlmod_fork.title": "MLMod Fork",
+  "key.category.minecraft.keybind.mlmod_fork.title": "MLMod Fork",
   "keybind.mlmod_fork.open_config": "Open config",
   "keybind.mlmod_fork.reverse_replace_text": "Replace text",
   "keybind.mlmod_fork.replace_text": "Reverse replace text",

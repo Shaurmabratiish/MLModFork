@@ -31,7 +31,7 @@
 
 
 
-  "keybind.mlmod_fork.title": "MLMod Fork",
+  "key.category.minecraft.keybind.mlmod_fork.title": "MLMod Fork",
   "keybind.mlmod_fork.open_config": "Открыть конфиг",
   "keybind.mlmod_fork.reverse_replace_text": "Замена текста",
   "keybind.mlmod_fork.replace_text": "Реверс. замена текста",
