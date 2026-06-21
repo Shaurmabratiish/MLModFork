@@ -5,6 +5,7 @@
   "text.mlmod_fork.config.text_replace.title": "Настройка замены текста",
   "text.mlmod_fork.config.source_text": "Исходный текст",
   "text.mlmod_fork.config.target_text": "Заменяемый текст",
+  "text.mlmod_fork.config.text_replace.reverse": "Реверсивный режим",
   "text.mlmod_fork.ignored_players.title": "Настройка игнорирования игроков",
   "text.mlmod_fork.ignored_players.debug": "Дебаг",
   "text.mlmod_fork.ignored_players_list": "Игнорируемые игроки",
@@ -32,6 +33,8 @@
 
   "keybind.mlmod_fork.title": "MLMod Fork",
   "keybind.mlmod_fork.open_config": "Открыть конфиг",
+  "keybind.mlmod_fork.reverse_replace_text": "Замена текста",
+  "keybind.mlmod_fork.replace_text": "Реверс. замена текста",
 
   "button.interaction_with_player.ignoring_add": "§cДобавить игрока в игнор-лист!",
   "button.interaction_with_player.ignoring_remove": "§aУбрать игрока из игнор-листа",

@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class ReplaceTextKeybind extends Keybinder{
     public ReplaceTextKeybind() {
-        super(GLFW.GLFW_KEY_H, "", "keybind.mlmod_fork.title");
+        super(GLFW.GLFW_KEY_H, "keybind.mlmod_fork.replace_text", "keybind.mlmod_fork.title");
     }
 
     @Override

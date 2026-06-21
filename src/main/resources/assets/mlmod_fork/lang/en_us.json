@@ -5,6 +5,7 @@
   "text.mlmod_fork.config.text_replace.title": "Text replace setting",
   "text.mlmod_fork.config.source_text": "Source text",
   "text.mlmod_fork.config.target_text": "Target text",
+  "text.mlmod_fork.config.text_replace.reverse": "Reverse mode",
   "text.mlmod_fork.ignored_players.title": "Ignoring players setting",
   "text.mlmod_fork.ignored_players.debug": "Debug",
   "text.mlmod_fork.ignored_players_list": "Players list",
@@ -31,7 +32,8 @@
 
   "keybind.mlmod_fork.title": "MLMod Fork",
   "keybind.mlmod_fork.open_config": "Open config",
-
+  "keybind.mlmod_fork.reverse_replace_text": "Replace text",
+  "keybind.mlmod_fork.replace_text": "Reverse replace text",
 
   "button.interaction_with_player.ignoring_add": "§cAdd player to ignore-list!",
   "button.interaction_with_player.ignoring_remove": "§aRemove player from ignore-list!",

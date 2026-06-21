@@ -5,6 +5,7 @@ import noobsdev.mlmod_fork.client.commands.CommandHandler;
 import noobsdev.mlmod_fork.client.keybinds.OpenConfigBind;
 import noobsdev.mlmod_fork.client.keybinds.RegisterKeybind;
 import noobsdev.mlmod_fork.client.keybinds.ReplaceTextKeybind;
+import noobsdev.mlmod_fork.client.keybinds.ReverseReplaceTextKeybind;
 import noobsdev.mlmod_fork.client.listeners.ChatListener;
 import noobsdev.mlmod_fork.client.listeners.TickListener;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
@@ -27,6 +28,7 @@ public class Mlmod_forkClient implements ClientModInitializer {
 
         keybinds.add(new OpenConfigBind());
         keybinds.add(new ReplaceTextKeybind());
+        keybinds.add(new ReverseReplaceTextKeybind());
     }
 
     private void secretSettings() {
