@@ -7,6 +7,7 @@ import net.minecraft.text.Text;
 public class HelpCommand extends MLModCommand{
     @Override
     public void run(FabricClientCommandSource ctx) {
+        assert MinecraftClient.getInstance().player != null;
         MinecraftClient.getInstance().player.sendMessage(Text.literal("it's a MLMod!"), false);
     }
 }
