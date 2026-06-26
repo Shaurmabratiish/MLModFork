@@ -8,7 +8,7 @@ import noobsdev.mlmod_fork.client.packets.SetItemInHandPacket;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
 import org.lwjgl.glfw.GLFW;
 
-public class ReverseReplaceTextKeybind extends Keybinder{
+public class ReverseReplaceTextKeybind extends Keybinder {
     public ReverseReplaceTextKeybind() {
         super(GLFW.GLFW_KEY_J, "keybind.mlmod_fork.reverse_replace_text", "keybind.mlmod_fork.title");
     }
@@ -19,19 +19,23 @@ public class ReverseReplaceTextKeybind extends Keybinder{
         assert client.player != null;
         ItemStack item = client.player.getMainHandStack();
         int slot = client.player.getInventory().selectedSlot;
-        if(!item.isEmpty()) {
-            new SetItemInHandPacket().send(client.player, slot, parser(item));
+
+        if (item != null && !item.isEmpty()) {
+            ItemStack parsedItem = parser(item.copy());
+
+            if (parsedItem != null) {
+                new SetItemInHandPacket().send(client.player, slot, parsedItem);
+            }
         }
     }
 
     private ItemStack parser(ItemStack result) {
-
         String targetText = ModConfig.INSTANCE.sourceText;
         String sourceText = ModConfig.INSTANCE.targetText;
 
-        if(result == null || !result.hasNbt()) return null;
+        if (result == null || !result.hasNbt()) return null;
 
-        if(result.getName().contains(Text.of(targetText))) {
+        if (result.getName().contains(Text.of(targetText))) {
             result.setCustomName(Text.of(result.getName().getString().replace(sourceText, targetText)));
         }
 
@@ -40,7 +44,9 @@ public class ReverseReplaceTextKeybind extends Keybinder{
         NbtCompound displayNbt;
         if (rootNbt.contains("display", 10)) {
             displayNbt = rootNbt.getCompound("display");
-        } else { return null;}
+        } else {
+            return null;
+        }
 
         NbtCompound creativeNbt = null;
 
@@ -54,6 +60,7 @@ public class ReverseReplaceTextKeybind extends Keybinder{
         if (creativeNbt == null) {
             return null;
         }
+
         if (displayNbt.contains("VV|Protocol1_12_2To1_13|Name")) {
             String text = displayNbt.getString("VV|Protocol1_12_2To1_13|Name");
             if (text.contains(sourceText)) {
@@ -67,6 +74,7 @@ public class ReverseReplaceTextKeybind extends Keybinder{
                 creativeNbt.putString("value", text.replaceAll(sourceText, targetText));
             }
         }
+
         return result;
     }
 }

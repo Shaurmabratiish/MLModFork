@@ -19,8 +19,13 @@ public class ReplaceTextKeybind extends Keybinder{
         assert client.player != null;
         ItemStack item = client.player.getMainHandStack();
         int slot = client.player.getInventory().selectedSlot;
-        if(!item.isEmpty()) {
-            new SetItemInHandPacket().send(client.player, slot, parser(item));
+
+        if (item != null && !item.isEmpty()) {
+            ItemStack parsedItem = parser(item.copy());
+
+            if (parsedItem != null) {
+                new SetItemInHandPacket().send(client.player, slot, parsedItem);
+            }
         }
     }
 

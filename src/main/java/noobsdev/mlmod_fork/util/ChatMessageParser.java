@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class ChatMessageParser {
     public static final Pattern DONATE_CHAT = Pattern.compile("(Донат-чат|Donate-chat) » (?:([^\\s:]+) )?([^\\s:]+)(?: ([^\\s:]+))?: (.*)");
-    public static final Pattern CREATIVE_CHAT = Pattern.compile("(Креатив-чат|Creative-chat) » (?:([^\\s:]+) )?([^\\s:]+)(?: ([^\\s:]+))?: (.*)");
+    public static final Pattern CREATIVE_CHAT = Pattern.compile("(Креатив-чат|Creative-chat) (?:») (?:(.*?)\\s)?([^\\s:]+): (.*)");
     public static final Pattern SYSTEM = Pattern.compile("(Система|System|Друзья|Friends) » (?:([^\\s:]+) )?([^\\s:]+)(?: ([^\\s:]+))?(?: (.*))?");
     public static final Pattern LOCAL_CHAT = Pattern.compile("(?:\\[(\\S+)] )?(?:(\\S+) )?(\\S+)(?: (\\S+))? » (.*)");
     public static final Pattern WORLD_INVITE = Pattern.compile("\\| (?:([^\\s:]+) )?([^\\s:]+)(?: ([^\\s:]+))?");
