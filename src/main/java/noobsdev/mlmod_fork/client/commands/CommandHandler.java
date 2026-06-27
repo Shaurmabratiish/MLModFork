@@ -72,6 +72,30 @@ public class CommandHandler {
                                 )
                         )
                 )
+                .then(literal("comment")
+                        .executes(ctx -> {
+                            new ConfigCommand().run(ctx.getSource());
+                            return 1;
+                        })
+                        .then(ClientCommandManager.literal("add")
+                                .then(ClientCommandManager.argument("comment_id", StringArgumentType.greedyString())
+                                        .executes(context -> {
+                                            String comment = StringArgumentType.getString(context, "comment_id");
+                                            new CommentCommand().addComment(context.getSource(),comment);
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(ClientCommandManager.literal("remove")
+                                .then(ClientCommandManager.argument("comment_id", StringArgumentType.greedyString())
+                                        .executes(context -> {
+                                            String comment = StringArgumentType.getString(context, "comment_id");
+                                            new CommentCommand().addComment(context.getSource(),comment);
+                                            return 1;
+                                        })
+                                )
+                        )
+                )
         ));
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("mlmod_internal_menu")
                 .then(ClientCommandManager.argument("targetPlayer", StringArgumentType.greedyString())

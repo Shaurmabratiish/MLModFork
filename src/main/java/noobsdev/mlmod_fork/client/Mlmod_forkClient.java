@@ -9,11 +9,15 @@ import noobsdev.mlmod_fork.client.keybinds.ReverseReplaceTextKeybind;
 import noobsdev.mlmod_fork.client.listeners.ChatListener;
 import noobsdev.mlmod_fork.client.listeners.TickListener;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
+import noobsdev.mlmod_fork.util.ModFolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Mlmod_forkClient implements ClientModInitializer {
+
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final ModFolder modFolder = new ModFolder();
+
     @Override
     public void onInitializeClient() {
         loadKeybinds();
