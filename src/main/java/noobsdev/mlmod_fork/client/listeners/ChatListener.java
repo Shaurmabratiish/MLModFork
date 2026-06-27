@@ -25,7 +25,7 @@ public class ChatListener {
 
             if (message.getStyle() != null && message.getStyle().getClickEvent() != null) {
                 String command = getString(message);
-                if (command != null && (command.startsWith("/mlmod_internal_menu") || command.contains("mlmod_menu_marker"))) {
+                if (command != null && (command.startsWith("/mlmod"))) {
                     return true;
                 }
             }
@@ -95,7 +95,7 @@ public class ChatListener {
         if (worldID != null && ModConfig.INSTANCE.isWorldIgnoreEnabled && ModConfig.INSTANCE.isIgnoredWorldsContains(worldID)) {
             if (ModConfig.INSTANCE.ignoreWorldsDebug) {
                 assert client.player != null;
-                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокирована реклама мира: " + worldID),false);
+                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокирована реклама мира: " + worldID), false);
             }
             Mlmod_forkClient.LOGGER.info("§7§o[MLMOD] Заблокирована реклама мира: {}", worldID);
             return true;
