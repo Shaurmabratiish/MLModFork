@@ -8,8 +8,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class ConfigScreenProvider {
+
 
     public static Screen createConfigScreen(Screen parentScreen) {
         ModConfig config = ModConfig.INSTANCE;
@@ -161,6 +163,9 @@ public class ConfigScreenProvider {
                 .setSaveConsumer(newValue -> config.worldsIgnoring = newValue)
                 .build());
 
+        SubCategoryBuilder decorators = DecoratorCategoryBuilder.decorators(entryBuilder);
+        creative.addEntry(decorators.build());
+
         chatUtils.addEntry(worldIgnoring.build());
         chatUtils.addEntry(clanIgnoring.build());
         chatUtils.addEntry(playerInteraction.build());
@@ -168,4 +173,6 @@ public class ConfigScreenProvider {
         builder.setSavingRunnable(config::save);
         return builder.build();
     }
+    // todo: переделать в методы все
+
 }

@@ -1,12 +1,16 @@
 package noobsdev.mlmod_fork.client.keybinds;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import noobsdev.mlmod_fork.client.packets.SetItemInHandPacket;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.Optional;
 
 public class ReplaceTextKeybind extends Keybinder{
     public ReplaceTextKeybind() {
@@ -16,62 +20,71 @@ public class ReplaceTextKeybind extends Keybinder{
     @Override
     public void bind() {
         MinecraftClient client = MinecraftClient.getInstance();
-        assert client.player != null;
+        if (client.player == null) return;
+
         ItemStack item = client.player.getMainHandStack();
-        int slot = client.player.getInventory().selectedSlot;
+        int slot = client.player.getInventory().getSelectedSlot();
 
-        if (item != null && !item.isEmpty()) {
-            ItemStack parsedItem = parser(item.copy());
-
+        if (!item.isEmpty()) {
+            ItemStack parsedItem = parser(item);
             if (parsedItem != null) {
                 new SetItemInHandPacket().send(client.player, slot, parsedItem);
             }
         }
     }
 
-    private ItemStack parser(ItemStack result) {
-
+    private ItemStack parser(ItemStack item) {
         String targetText = ModConfig.INSTANCE.targetText;
         String sourceText = ModConfig.INSTANCE.sourceText;
 
-        if(result == null || !result.hasNbt()) return null;
+        ItemStack result = item.copy();
 
-        if(result.getName().contains(Text.of(targetText))) {
-            result.setCustomName(Text.of(result.getName().getString().replace(sourceText, targetText)));
+        Text customName = result.get(DataComponentTypes.CUSTOM_NAME);
+        if (customName != null && customName.getString().contains(sourceText)) {
+            String newNameStr = customName.getString().replace(sourceText, targetText);
+            result.set(DataComponentTypes.CUSTOM_NAME, Text.literal(newNameStr));
         }
 
-        NbtCompound rootNbt = result.getOrCreateNbt();
+        NbtComponent customDataComponent = result.get(DataComponentTypes.CUSTOM_DATA);
+        if (customDataComponent == null) return null;
 
-        NbtCompound displayNbt;
-        if (rootNbt.contains("display", 10)) {
-            displayNbt = rootNbt.getCompound("display");
-        } else { return null;}
+        Optional<NbtCompound> optionalNbt = customDataComponent.copyNbt().asCompound();
+        if (optionalNbt.isEmpty()) return null;
 
-        NbtCompound creativeNbt = null;
+        NbtCompound rootNbt = optionalNbt.get();
+        boolean modified = false;
 
-        if (rootNbt.contains("creative", 10)) {
-            NbtCompound creative = rootNbt.getCompound("creative");
-            if (creative.contains("value", 10)) {
-                creativeNbt = creative.getCompound("value");
+        if (rootNbt.contains("display")) {
+            NbtCompound displayNbt = rootNbt.getCompoundOrEmpty("display");
+            if (displayNbt.contains("VV|Protocol1_12_2To1_13|Name")) {
+                String text = displayNbt.getString("VV|Protocol1_12_2To1_13|Name", null);
+                if (text != null && text.contains(sourceText)) {
+                    displayNbt.putString("VV|Protocol1_12_2To1_13|Name", text.replace(sourceText, targetText));
+                    modified = true;
+                }
             }
         }
 
-        if (creativeNbt == null) {
-            return null;
-        }
-        if (displayNbt.contains("VV|Protocol1_12_2To1_13|Name")) {
-            String text = displayNbt.getString("VV|Protocol1_12_2To1_13|Name");
-            if (text.contains(sourceText)) {
-                displayNbt.putString("VV|Protocol1_12_2To1_13|Name", text.replaceAll(sourceText, targetText));
+        if (rootNbt.contains("creative")) {
+            NbtCompound creative = rootNbt.getCompoundOrEmpty("creative");
+            if (creative.contains("value")) {
+                NbtCompound creativeValue = creative.getCompoundOrEmpty("value");
+
+                if (creativeValue.contains("value")) {
+                    String text = creativeValue.getString("value", null);
+                    if (text != null && text.contains(sourceText)) {
+                        creativeValue.putString("value", text.replace(sourceText, targetText));
+                        modified = true;
+                    }
+                }
             }
         }
 
-        if (creativeNbt.contains("value")) {
-            String text = creativeNbt.getString("value");
-            if (text.contains(sourceText)) {
-                creativeNbt.putString("value", text.replaceAll(sourceText, targetText));
-            }
+        if (modified) {
+            result.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(rootNbt));
+            return result;
         }
-        return result;
+
+        return null;
     }
 }

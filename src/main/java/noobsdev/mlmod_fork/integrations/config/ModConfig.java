@@ -46,6 +46,49 @@ public class ModConfig {
     public boolean isWorldIgnoreEnabled = false;
     public boolean ignoreWorldsDebug = false;
 
+
+    // -----------------Декораторы------------------------
+
+    public boolean isDecoratorsEnabled = false;
+    public float DecoratorsSize = 1.0f;
+
+    public String textDecoratorColor = "#55FFFF";
+    public boolean isTextDecoratorEnabled = true;
+    public int textDecoratorCharLimit = 3;
+
+    public String numDecoratorColor = "#FF5555";
+    public boolean isNumDecoratorEnabled = true;
+    public int numDecoratorCharLimit = 3;
+
+    public String locationDecoratorColor = "#55FF55";
+    public boolean isLocationDecoratorEnabled = true;
+    public int locationDecoratorCharLimit = 3;
+
+    public String potionDecoratorColor = "#AA00AA";
+    public boolean isPotionDecoratorEnabled = true;
+    public int potionDecoratorCharLimit = 3;
+
+    public String varDecoratorColor = "#FF5555";
+    public boolean isVarDecoratorEnabled = true;
+    public int varDecoratorCharLimit = 3;
+
+    public String gameValueDecoratorColor = "#55FF55";
+    public boolean isGameValueDecoratorEnabled = true;
+    public int gameValueDecoratorCharLimit = 3;
+
+    public String particleDecoratorColor = "#55FF55";
+    public boolean isParticleDecoratorEnabled = true;
+    public int particleDecoratorCharLimit = 3;
+
+    public String textComponentDecoratorColor = "#5555FF";
+    public boolean isTextComponentDecoratorEnabled = true;
+    public int textComponentDecoratorCharLimit = 3;
+
+    public String vectorDecoratorColor = "#00AAAA";
+    public boolean isVectorDecoratorEnabled = true;
+    public int vectorDecoratorCharLimit = 3;
+
+
     public static ModConfig INSTANCE = load();
 
     public static ModConfig load() {

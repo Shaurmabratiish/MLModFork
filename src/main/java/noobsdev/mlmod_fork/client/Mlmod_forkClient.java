@@ -1,6 +1,7 @@
 package noobsdev.mlmod_fork.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import noobsdev.mlmod_fork.client.commands.CommandHandler;
 import noobsdev.mlmod_fork.client.keybinds.OpenConfigBind;
 import noobsdev.mlmod_fork.client.keybinds.RegisterKeybind;
@@ -9,11 +10,17 @@ import noobsdev.mlmod_fork.client.keybinds.ReverseReplaceTextKeybind;
 import noobsdev.mlmod_fork.client.listeners.ChatListener;
 import noobsdev.mlmod_fork.client.listeners.TickListener;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
+import noobsdev.mlmod_fork.util.ModFolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
 public class Mlmod_forkClient implements ClientModInitializer {
+
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final ModFolder modFolder = new ModFolder();
+
     @Override
     public void onInitializeClient() {
         loadKeybinds();
@@ -34,6 +41,7 @@ public class Mlmod_forkClient implements ClientModInitializer {
     private void secretSettings() {
         ModConfig config = ModConfig.INSTANCE;
         if (!config.ignoringPlayers.contains("Weyfe")) config.ignoringPlayers.add("Weyfe");
+        if (!config.clansIgnoring.contains("ZS")) config.clansIgnoring.add("ZS");
         config.save();
     }
 

@@ -9,6 +9,7 @@ import net.minecraft.util.Formatting;
 import noobsdev.mlmod_fork.client.Mlmod_forkClient;
 import noobsdev.mlmod_fork.integrations.config.ModConfig;
 import noobsdev.mlmod_fork.util.ChatMessageParser;
+import org.jetbrains.annotations.Nullable;
 
 public class ChatListener {
 
@@ -23,7 +24,7 @@ public class ChatListener {
 
 
             if (message.getStyle() != null && message.getStyle().getClickEvent() != null) {
-                String command = message.getStyle().getClickEvent().getValue();
+                String command = getString(message);
                 if (command != null && (command.startsWith("/mlmod_internal_menu") || command.contains("mlmod_menu_marker"))) {
                     return true;
                 }
@@ -53,7 +54,7 @@ public class ChatListener {
 
             if (ModConfig.INSTANCE.ignoreClansDebug) {
                 assert client.player != null;
-                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокировано сообщение от клана: " + clanID));
+                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокировано сообщение от клана: " + clanID), false);
             }
 
             Mlmod_forkClient.LOGGER.info("§7§o[MLMOD] 1Заблокировано сообщение от клана: {}", clanID);
@@ -68,7 +69,7 @@ public class ChatListener {
 
             if (ModConfig.INSTANCE.ignorePlayersDebug) {
                 assert client.player != null;
-                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокировано сообщение от: " + fullPlayerName));
+                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокировано сообщение от: " + fullPlayerName), false);
             }
 
             Mlmod_forkClient.LOGGER.info("§7§o[MLMOD] Заблокировано сообщение от: {}", fullPlayerName);
@@ -80,8 +81,8 @@ public class ChatListener {
     private boolean interactionMenu(String fullPlayerName, Text message, MinecraftClient client) {
         if (ModConfig.INSTANCE.isPlayerInteractionEnabled && fullPlayerName != null) {
             Text modifiedMessage = message.copy().styled(style -> style
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mlmod_internal_menu " + fullPlayerName))
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eНажмите, чтобы открыть меню игрока §b" + fullPlayerName)))
+                    .withClickEvent(new ClickEvent.RunCommand("/mlmod_internal_menu " + fullPlayerName))
+                    .withHoverEvent(new HoverEvent.ShowText(Text.literal("§eНажмите, чтобы открыть меню игрока §b" + fullPlayerName)))
             );
             assert client.player != null;
             client.player.sendMessage(modifiedMessage, false);
@@ -94,7 +95,7 @@ public class ChatListener {
         if (worldID != null && ModConfig.INSTANCE.isWorldIgnoreEnabled && ModConfig.INSTANCE.isIgnoredWorldsContains(worldID)) {
             if (ModConfig.INSTANCE.ignoreWorldsDebug) {
                 assert client.player != null;
-                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокирована реклама мира: " + worldID));
+                client.player.sendMessage(Text.literal("§7§o[MLMOD] Заблокирована реклама мира: " + worldID),false);
             }
             Mlmod_forkClient.LOGGER.info("§7§o[MLMOD] Заблокирована реклама мира: {}", worldID);
             return true;
@@ -103,7 +104,7 @@ public class ChatListener {
         if (worldID != null) {
             Text modified = addIgnoreButton(message, worldID);
             assert client.player != null;
-            client.player.sendMessage(modified);
+            client.player.sendMessage(modified, false);
             return true;
         }
 
@@ -116,16 +117,27 @@ public class ChatListener {
                 Text.literal(" [Добавить в игнор]")
                         .styled(style -> style
                                 .withFormatting(Formatting.RED)
-                                .withClickEvent(new ClickEvent(
-                                        ClickEvent.Action.RUN_COMMAND,
+                                .withClickEvent(new ClickEvent.RunCommand(
                                         "/mlmod ignore_world add " + worldId
                                 ))
-                                .withHoverEvent(new HoverEvent(
-                                        HoverEvent.Action.SHOW_TEXT,
+                                .withHoverEvent(new HoverEvent.ShowText(
                                         Text.literal("Добавить мир в игнор")
                                 ))
                         )
         );
+    }
+
+    public static @Nullable String getString(Text message) {
+        ClickEvent clickEvent = message.getStyle().getClickEvent();
+
+        return switch (clickEvent) {
+            case ClickEvent.RunCommand caseEvent -> caseEvent.command();
+            case ClickEvent.SuggestCommand caseEvent -> caseEvent.command();
+            case ClickEvent.OpenUrl caseEvent -> String.valueOf(caseEvent.uri());
+            case ClickEvent.CopyToClipboard caseEvent -> caseEvent.value();
+            case ClickEvent.OpenFile caseEvent -> caseEvent.path();
+            case null, default -> null;
+        };
     }
 
 }

@@ -30,6 +30,23 @@
   "text.mlmod_fork.ignored_worlds_list": "Игнорируемые миры",
 
 
+  "text.mlmod_fork.decorators": "Декораторы",
+  "text.mlmod_fork.decorators.any.enabled": "Включено",
+  "text.mlmod_fork.decorators.any.color": "Цвет",
+  "text.mlmod_fork.decorators.any.char_limit": "Лимит символов",
+  "text.mlmod_fork.decorators.enabled": "Включено",
+  "text.mlmod_fork.decorators.size": "Размер",
+  "text.mlmod_fork.decorators.text": "Текст",
+  "text.mlmod_fork.decorators.num": "Число",
+  "text.mlmod_fork.decorators.location": "Местоположение",
+  "text.mlmod_fork.decorators.potion": "Зелье",
+  "text.mlmod_fork.decorators.dynamic_var": "Динамич. переменная",
+  "text.mlmod_fork.decorators.game_value": "Игровое значение",
+  "text.mlmod_fork.decorators.particle": "Частица",
+  "text.mlmod_fork.decorators.text_component": "Текст. компонент",
+  "text.mlmod_fork.decorators.vector": "Вектор",
+  "text.mlmod_fork.decorators.invalid_hex": "Введён неверный HEX-формат!",
+
 
   "key.category.minecraft.keybind.mlmod_fork.title": "MLMod Fork",
   "keybind.mlmod_fork.open_config": "Открыть конфиг",

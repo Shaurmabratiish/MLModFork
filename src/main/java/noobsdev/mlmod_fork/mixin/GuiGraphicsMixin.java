@@ -2,8 +2,11 @@ package noobsdev.mlmod_fork.mixin;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import noobsdev.mlmod_fork.integrations.config.ModConfig;
 import noobsdev.mlmod_fork.util.Development;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,40 +21,49 @@ public abstract class GuiGraphicsMixin {
     public abstract int drawText(TextRenderer textRenderer, @Nullable Text text, int x, int y, int color, boolean shadow);
 
     @Shadow
-    public abstract void fill(int startX, int startY, int endX, int endY, int color);
+    public abstract void fill(RenderLayer layer, int startX, int startY, int endX, int endY, int color);
 
     @Inject(
-            method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V",
+            method = "drawStackOverlay(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V",
             at = @At("TAIL")
     )
     public void renderItemDecorations(TextRenderer textRenderer, ItemStack stack, int x, int y, String countOverride, CallbackInfo ci) {
 
         if (stack == null || stack.isEmpty()) return;
 
-        if(!Development.isItemContainsCreativeTag(stack)) return;
+        if (!Development.isItemContainsCreativeTag(stack)) return;
 
         Development.VarInstance varType = Development.getVarType(stack);
-        if(varType == null) return;
+        if (varType == null) return;
+
+        if (!ModConfig.INSTANCE.isDecoratorsEnabled || !varType.type().isEnabled()) return;
 
         String rawText = varType.value();
-        String textStr = net.minecraft.util.Formatting.strip(rawText);
-        int color = 0xFFFFFF;
+        String textStr = Formatting.strip(rawText);
+        int color = varType.type().getColor();
 
-        if (textStr != null && textStr.length() > 3) {
-            textStr = textStr.substring(0, 3);
+        int charLimit = varType.type().getCharLimit();
+
+        if (textStr != null && textStr.length() > charLimit) {
+            textStr = textStr.substring(0, charLimit);
         } else if (textStr == null) {
             textStr = "NULL";
             color = 0xFF0000;
         }
-        
+
         DrawContext context = (DrawContext) (Object) this;
+        float scale = ModConfig.INSTANCE.DecoratorsSize;
 
         context.getMatrices().push();
-        context.getMatrices().translate(0, 0, 200.0F);
 
+        context.getMatrices().translate(x, y, 200.0F);
 
-        fill(x - 4, y - 2, x - 3 + textRenderer.getWidth(textStr), y + textRenderer.fontHeight, 0x88000000);
-        drawText(textRenderer, Text.literal(textStr), x - 3, y - 1, color, true);
+        context.getMatrices().scale(scale, scale, 1.0f);
+
+        int textWidth = textRenderer.getWidth(textStr);
+
+        context.fill(RenderLayer.getGui(), -4, -2, -3 + textWidth, textRenderer.fontHeight, 0x88000000);
+        context.drawText(textRenderer, Text.literal(textStr), -3, -1, color, true);
 
         context.getMatrices().pop();
     }

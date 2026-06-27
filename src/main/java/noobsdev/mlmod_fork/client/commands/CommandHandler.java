@@ -72,6 +72,30 @@ public class CommandHandler {
                                 )
                         )
                 )
+                .then(literal("comment")
+                        .executes(ctx -> {
+                            new ConfigCommand().run(ctx.getSource());
+                            return 1;
+                        })
+                        .then(ClientCommandManager.literal("add")
+                                .then(ClientCommandManager.argument("comment_id", StringArgumentType.greedyString())
+                                        .executes(context -> {
+                                            String comment = StringArgumentType.getString(context, "comment_id");
+                                            new CommentCommand().addComment(context.getSource(),comment);
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(ClientCommandManager.literal("remove")
+                                .then(ClientCommandManager.argument("comment_id", StringArgumentType.greedyString())
+                                        .executes(context -> {
+                                            String comment = StringArgumentType.getString(context, "comment_id");
+                                            new CommentCommand().addComment(context.getSource(),comment);
+                                            return 1;
+                                        })
+                                )
+                        )
+                )
         ));
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("mlmod_internal_menu")
                 .then(ClientCommandManager.argument("targetPlayer", StringArgumentType.greedyString())
@@ -88,15 +112,15 @@ public class CommandHandler {
                                     ignoreBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.ignoring")).append("]")
                                             .formatted(Formatting.RED)
                                             .styled(style -> style
-                                                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mlmod ignore add " + targetPlayer)) // или ваша команда конфига
-                                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.ignoring_add")))
+                                                    .withClickEvent(new ClickEvent.RunCommand("/mlmod ignore add " + targetPlayer)) // или ваша команда конфига
+                                                    .withHoverEvent(new HoverEvent.ShowText(Text.translatable("button.interaction_with_player.ignoring_add")))
                                             );
                                 } else {
                                     ignoreBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.remove_ignore")).append("]")
                                             .formatted(Formatting.GREEN)
                                             .styled(style -> style
-                                                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mlmod ignore remove " + targetPlayer)) // или ваша команда конфига
-                                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.ignoring_remove")))
+                                                    .withClickEvent(new ClickEvent.RunCommand("/mlmod ignore remove " + targetPlayer)) // или ваша команда конфига
+                                                    .withHoverEvent(new HoverEvent.ShowText(Text.translatable("button.interaction_with_player.ignoring_remove")))
                                             );
                                 }
 
@@ -104,22 +128,22 @@ public class CommandHandler {
                                 MutableText msgBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.send_dm")).append("]")
                                         .formatted(Formatting.YELLOW)
                                         .styled(style -> style
-                                                .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + targetPlayer + " "))
-                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.send_dm")))
+                                                .withClickEvent(new ClickEvent.SuggestCommand("/msg " + targetPlayer + " "))
+                                                .withHoverEvent(new HoverEvent.ShowText( Text.translatable("button.interaction_with_player.send_dm")))
                                         );
 
                                 MutableText friendBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.add_friend")).append("]")
                                         .formatted(Formatting.AQUA)
                                         .styled(style -> style
-                                                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/f add " + targetPlayer))
-                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.add_friend")))
+                                                .withClickEvent(new ClickEvent.RunCommand("/f add " + targetPlayer))
+                                                .withHoverEvent(new HoverEvent.ShowText( Text.translatable("button.interaction_with_player.add_friend")))
                                         );
 
                                 MutableText reportBtn = Text.literal("[").append(Text.translatable("text.mlmod_fork.player_interaction.report")).append("]")
                                         .formatted(Formatting.RED)
                                         .styled(style -> style
-                                                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/report " + targetPlayer))
-                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("button.interaction_with_player.report")))
+                                                .withClickEvent(new ClickEvent.RunCommand("/report " + targetPlayer))
+                                                .withHoverEvent(new HoverEvent.ShowText( Text.translatable("button.interaction_with_player.report")))
                                         );
 
                                 ModConfig config = ModConfig.INSTANCE;
